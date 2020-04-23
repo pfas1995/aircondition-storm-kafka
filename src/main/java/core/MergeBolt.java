@@ -77,7 +77,11 @@ public class MergeBolt extends BaseRichBolt {
 
         String topic = parseTopic(tuple);
         String str = parseTuple(tuple);
+
         if (topic.equals(AppConfig.DefaultKafkaConfig.topic.get(0))) {
+            /**
+             *  parse the msg of iot-kt
+             */
             OriginalMsg originalMsg = null;
             try {
                 OriginalMsg.SensorMsg[] sensorMsgs = gson.fromJson(str, OriginalMsg.SensorMsg[].class);
@@ -100,6 +104,10 @@ public class MergeBolt extends BaseRichBolt {
 
         }
         else if (topic.equals(AppConfig.DefaultKafkaConfig.topic.get(1))) {
+
+            /**
+             * parse the msg of iot-cyg
+             */
             OriginalMsg originalMsg = null;
             try {
                 originalMsg = gson.fromJson(str, OriginalMsg.class);
@@ -117,7 +125,9 @@ public class MergeBolt extends BaseRichBolt {
         }
 
 
-
+        /**
+         * align the msg of iot-kt and iot-cyg by timestamp 
+         */
         while (!ktMsg.isEmpty() && !cygMsg.isEmpty()) {
             OriginalMsg ktm = ktMsg.peek();
             OriginalMsg cygm = cygMsg.peek();
