@@ -1,0 +1,27 @@
+app:
+  app-name: MachineLearning
+  env: local
+
+kafka-spout:
+  host: 10.100.100.105
+  # host: kfan01.chinaeast2.cloudapp.chinacloudapi.cn
+  port: 9092
+  topic:
+    - iot-KT
+    - iot-CYG
+#  topic: iot-5KHSJK
+  group-id: strom-kt-consumer
+  auto-offset-reset: latest
+
+model-server:
+  host: 10.100.100.106 # 模型部署在那个host
+  port: 5000
+  model-url: http://10.100.100.106:5000/api/predict  # 模型预测的URL，需要修改为 IP:port/api/predict 格式
+  model-config-url: http://10.100.100.106:5000/api/load_model_config # 模型预测的URL，需要修改 IP:port/api/load_model_config 格式
+
+control-server:
+  host: 10.114.147.6 # 反向控制的host，需要修改
+  port: 80
+  control-url: http://10.114.147.6/api/PLC/SetPLC # 反向控制的URL，需要IOT hub提供
+
+
